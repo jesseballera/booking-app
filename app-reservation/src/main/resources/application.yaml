@@ -1,0 +1,25 @@
+server:
+  port: 8073
+  forward-headers-strategy: framework
+  servlet:
+    contextPath: /
+  error:
+    include-stacktrace: never
+
+
+spring:
+  application:
+    name: reservation-service
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/${spring.data.mongodb.database}?authSource=${spring.data.mongodb.authentication-database}&readPreference=primaryPreferred&directConnection=true
+      database: gms_reservation_db
+      auto-index-creation: true
+      authentication-database: admin
+      username: root
+      password: root
+
+io:
+  reflectoring:
+    kafka:
+      bootstrap-servers: 'localhost:9092'
