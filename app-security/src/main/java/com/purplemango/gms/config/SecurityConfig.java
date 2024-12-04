@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,12 +22,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableMethodSecurity
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired UserDetailsServiceImpl userDetailsService;
-    @Autowired private AuthenticationEntryPoint authenticationEntryPoint;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
+    @Autowired
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, AuthenticationEntryPoint authenticationEntryPoint) {
+        this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
     @Bean
     public AuthenticationTokenFilter authenticationTokenFilter() {
@@ -36,10 +42,8 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -59,25 +63,19 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/**",
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/",
                                     "/v3/api-docs",
                                     "/v3/api-docs/**",
                                     "/v3/api-docs**",
                                     "/v3/api-docs/swagger-config",
                                     "/swagger-ui**")
-                        .permitAll().anyRequest().authenticated());
+                        .permitAll()
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
-
         http.addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers("/api/login");
-//    }
 
 }
