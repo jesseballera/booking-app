@@ -18,3 +18,14 @@ spring:
       authentication-database: admin
       username: root
       password: root
+
+
+openapi:
+  service:
+    title: GMS IAM Service
+    version: 1.0
+    description: IAM Service for GMS
+    url: http://127.0.0.1:8070
+    contact:
+      name: GMS Team
+      url: https://github.com/jesseballera/booking-app/tree/master/app-iam

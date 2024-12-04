@@ -23,3 +23,13 @@ io:
   reflectoring:
     kafka:
       bootstrap-servers: 'localhost:9092'
+
+openapi:
+  service:
+    title: GMS Payment Service
+    version: 1.0
+    description: Client Payment for GMS
+    url: http://127.0.0.1:8074
+    contact:
+      name: GMS Team
+      url: https://github.com/jesseballera/booking-app/tree/master/app-payment

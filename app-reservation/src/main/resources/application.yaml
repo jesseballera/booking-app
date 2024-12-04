@@ -23,3 +23,13 @@ io:
   reflectoring:
     kafka:
       bootstrap-servers: 'localhost:9092'
+
+openapi:
+  service:
+    title: GMS Reservation Service
+    version: 1.0
+    description: Client Reservation for GMS
+    url: http://127.0.0.1:8073
+    contact:
+      name: GMS Team
+      url: https://github.com/jesseballera/booking-app/tree/master/app-reservation
