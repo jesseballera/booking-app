@@ -18,6 +18,7 @@ spring:
       authentication-database: admin
       username: root
       password: root
+      dbAuthSource: gms_iam_db
 
 io:
   reflectoring:
