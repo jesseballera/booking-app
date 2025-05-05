@@ -28,8 +28,9 @@ jobs:
     - name: Push to container registry
       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
       run: |
-        echo ${{ secrets.REGISTRY_PASSWORD }} | docker login -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin ${{ secrets.REGISTRY_PASSWORD }}
-#        docker tag booking-app:${{ github.sha }} purple-mango/booking-app:${{ github.sha }}
-#        docker push purple-mango/booking-app:${{github.sha }}
+        docker login -u ${{ secrets.REGISTRY_USERNAME }} -p ${{ secrets.REGISTRY_PASSWORD }}
+        docker tag booking-app:${{ github.sha }} purple-mango/booking-app:${{ github.sha }}
+        docker push purple-mango/booking-app:${{github.sha }}
 
 
+#  echo ${{ secrets.REGISTRY_PASSWORD }} |
