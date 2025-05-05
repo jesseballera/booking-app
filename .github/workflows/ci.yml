@@ -1,15 +1,13 @@
-name: Docker Image CI
+name: Java CI/CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ master, develop ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -25,4 +23,4 @@ jobs:
       run: mvn -B package --file pom.xml
 
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file Dockerfile --tag purple-mango/booking-app:${{ github.sha }}
