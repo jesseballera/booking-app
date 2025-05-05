@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: purple-mango/booking-app
+    ports:
+      - "8050:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/booking
+      - MONGO_URL=mongodb://db:27017/booking
+      - REDIS_HOST=redis
+    depends_on:
+    - db
+#    - redis
+    networks:
+      - booking-app_network
+    links:
+      - "redis"
+
+  db:
+      image: mongo:6-jammy
+      ports:
+        - "27017:27017"
+
+      volumes:
+        - dbdata6:/data/db
+      environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_AUTHENTICATION_DATABASE=admin
+      - MONGO_INITDB_DATABASE=booking
+      networks:
+        - booking-app_network
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - booking-app_network
+volumes:
+  dbdata6:
+networks:
+  booking-app_network:
