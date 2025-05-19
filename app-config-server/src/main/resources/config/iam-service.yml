@@ -1,0 +1,38 @@
+server:
+  port: 0
+#  servlet:
+#    context-path: /
+#  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+
+spring:
+  profiles:
+    active: default
+  application:
+    name: iam-service
+    db: gms-iam-db
+
+springdoc:
+  api-docs:
+    path: /${spring.application.name}/v3/api-docs
+  swagger-ui:
+    path: /${spring.application.name}/swagger-ui.html
+
+init-data:
+  tenant-name: GMS Team
+  tenant-code: GMS
+
+openapi:
+  service:
+    title: IAM Service
+    description: IAM Service
+    version: 1.0.0
+    url: /${spring.application.name}
+    contact:
+      name: Purple Mango
+      url: XXXXXXXXXXXXXXXXXXXXXXXXXXX
+      email: XXXXXXXXXXXXXXXXXXXXXXX
+    license:
+      name: Apache 2.0
+      url: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

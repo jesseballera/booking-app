@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 //@EnableMongoRepositories
 @Configuration
@@ -19,9 +18,9 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     private final String mongoAuthDB;
 
     @Autowired
-    public MongoDBConfig( @Value("${spring.data.mongodb.uri}") String mongoURI,
-                          @Value("${spring.data.mongodb.database}") String mongoDatabase,
-                          @Value(("${spring.data.mongodb.dbAuthSource}")) String mongoAuthDB) {
+    public MongoDBConfig(@Value("${spring.data.mongodb.uri}") String mongoURI,
+                         @Value("${spring.data.mongodb.database}") String mongoDatabase,
+                         @Value(("${spring.data.mongodb.dbAuthSource}")) String mongoAuthDB) {
         this.mongoURI = mongoURI;
         this.mongoDatabase = mongoDatabase;
         this.mongoAuthDB = mongoAuthDB;
@@ -30,7 +29,12 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     @Bean
     @Override
     protected String getDatabaseName() {
-        return mongoDatabase;
+        ThreadLocal<String> threadLocal = MultiTenantMongoDBFactory.dbName;
+        String dbName = threadLocal.get();
+        if (dbName == null || dbName.isEmpty()) {
+            dbName = mongoDatabase;
+        }
+        return dbName;
     }
 
     @Bean
@@ -47,4 +51,5 @@ public class MongoDBConfig extends AbstractMongoClientConfiguration {
     public MongoTemplate mongoTemplateAuth() {
         return new MongoTemplate(mongoClient(), mongoAuthDB);
     }
+
 }

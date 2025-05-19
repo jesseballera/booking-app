@@ -6,7 +6,6 @@ import com.purplemango.gms.models.iam.Permission;
 import com.purplemango.gms.models.iam.UpdatePermission;
 import com.purplemango.gms.repository.PermissionRepository;
 import com.purplemango.gms.service.PermissionService;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

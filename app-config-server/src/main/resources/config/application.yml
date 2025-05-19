@@ -1,0 +1,72 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27017/${spring.application.db}?authSource=${spring.data.mongodb.authentication-database}&readPreference=primaryPreferred&directConnection=true
+      database: ${spring.application.db}
+      auto-index-creation: true
+      authentication-database: admin
+      username: root
+      password: root
+      dbAuthSource: admin
+    redis:
+      timeout: 2000
+      maximumActiveConnectionCount: 128
+      sessiondata:
+        ttl: 12000
+  cache:
+    type: redis
+    redis:
+      host: 127.0.0.1
+      port: 6379
+
+io:
+  reflectoring:
+    kafka:
+      bootstrap-servers: 'localhost:9092'
+
+
+springdoc:
+  api-docs:
+    path: /${spring.application.name}/v3/api-docs
+  swagger-ui:
+    path: /${spring.application.name}/swagger-ui.html
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){blue} %clr(${LOG_LEVEL_PATTERN:-%5p}) %m%n"
+
+#openapi:
+#  service:
+#    title: GMS IAM Service
+#    version: 1.0
+#    description: IAM Service for GMS
+#    url: http://127.0.0.1:8070
+#    contact:
+#      name: GMS Team
+#      url: https://github.com/jesseballera/booking-app/tree/master/app-iam
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus, trace, openapi, swagger-ui
+      jackson:
+        isolated-object-mapper: false
+    jmx:
+      exposure:
+        enabled: true
+  health:
+    defaults: false
+
+

@@ -10,16 +10,16 @@ import java.util.Collection;
 import java.util.Collections;
 
 public interface UserService {
-    void createUser(AddUser entity);
+    void createUser(String tenantId, AddUser entity);
 
-    Collection<User> viewAllUsers();
+    Collection<User> viewAllUsers(String tenantId);
 
-    User viewUserById(String entityId);
+    User viewUserById(String tenantId, String entityId);
 
-    User viewUserByUsername(String username);
+    User viewUserByUsername(String tenantId, String username);
 
-    void updateUser(UpdateUser entity, String entityId);
+    void updateUser(String tenantId, UpdateUser entity, String entityId);
 
-    void deleteUser(String entityId);
+    void deleteUser(String tenantId, String entityId);
 
 }

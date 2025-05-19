@@ -1,36 +1,7 @@
-server:
-  port: 8073
-  forward-headers-strategy: framework
-  servlet:
-    contextPath: /
-  error:
-    include-stacktrace: never
-
-
 spring:
   application:
     name: reservation-service
-  data:
-    mongodb:
-      uri: mongodb://root:root@localhost:27017/${spring.data.mongodb.database}?authSource=${spring.data.mongodb.authentication-database}&readPreference=primaryPreferred&directConnection=true
-      database: gms_reservation_db
-      auto-index-creation: true
-      authentication-database: admin
-      username: root
-      password: root
-      dbAuthSource: gms_iam_db
-
-io:
-  reflectoring:
-    kafka:
-      bootstrap-servers: 'localhost:9092'
-
-openapi:
-  service:
-    title: GMS Reservation Service
-    version: 1.0
-    description: Client Reservation for GMS
-    url: http://127.0.0.1:8073
-    contact:
-      name: GMS Team
-      url: https://github.com/jesseballera/booking-app/tree/master/app-reservation
+  profiles:
+    active: default
+  config:
+    import: "optional:configserver:http://localhost:8888"

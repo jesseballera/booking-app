@@ -1,0 +1,22 @@
+server:
+  port: 0
+  servlet:
+    context-path: /
+  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+spring:
+  profiles:
+    active: default
+  application:
+    db: gms-reservation-db
+
+openapi:
+  service:
+    title: GMS Reservation Service
+    version: 1.0
+    description: Client Reservation for GMS
+    url: http://127.0.0.1:8060
+    contact:
+      name: GMS Team
+      url: https://github.com/jesseballera/booking-app/tree/master/app-reservation

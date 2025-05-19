@@ -5,17 +5,21 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.UUID;
 
-@Document(collection = "users")
+@Document(collection = User.COLLECTION_NAME)
 public record User(
         @MongoId String id,
         String username,
         @JsonIgnore String password,
         String email,
+        String tenant,
         Role role,
-        UserStatus status) {
+        UserStatus status) implements Serializable {
+    private static final long serialVersionUID = 1L;
+    public static final String COLLECTION_NAME = "users";
 
     public static enum UserStatus {
         ACTIVE,

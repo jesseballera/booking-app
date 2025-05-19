@@ -8,6 +8,7 @@ public record AddUser(
         String username,
         String password,
         String email,
+        String tenant,
         String roleName,
         User.UserStatus status) {
 

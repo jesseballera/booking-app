@@ -6,15 +6,18 @@ import lombok.Getter;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
-@Document(collection = "permissions")
+@Document(collection = Permission.COLLECTION_NAME)
 public record Permission (
         @MongoId String id,
         String permissionName,
-        Status status){
+        Status status) implements Serializable {
+    private static final long serialVersionUID = 1L;
+    public static final String COLLECTION_NAME = "permissions";
 
     public static Permission addPermission(AddPermission entity) {
         return new Permission(UUID.randomUUID().toString(), entity.permissionName(), Status.ACTIVE);

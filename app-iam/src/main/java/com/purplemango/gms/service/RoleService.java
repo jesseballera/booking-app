@@ -9,10 +9,10 @@ import java.util.Collection;
 import java.util.UUID;
 
 public interface RoleService {
-    Collection<Role> viewAllRoles();
-    Role viewById(String entityId);
-    Role viewByName(String name);
-    void createRole(AddRole entity);
-    void updateRole(UpdateRole entity, String entityId);
-    void deleteRole(String entityId);
+    Collection<Role> viewAllRoles(String tenantId);
+    Role viewById(String tenantId, String entityId);
+    Role viewByName(String tenantId, String name);
+    void createRole(String tenantId, AddRole entity);
+    void updateRole(String tenantId, UpdateRole entity, String entityId);
+    void deleteRole(String tenantId, String entityId);
 }

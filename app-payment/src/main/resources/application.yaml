@@ -1,36 +1,7 @@
-server:
-  port: 8074
-  forward-headers-strategy: framework
-  servlet:
-    contextPath: /
-  error:
-    include-stacktrace: never
-
-
 spring:
   application:
     name: payment-service
-  data:
-    mongodb:
-      uri: mongodb://root:root@localhost:27017/${spring.data.mongodb.database}?authSource=${spring.data.mongodb.authentication-database}&readPreference=primaryPreferred&directConnection=true
-      database: gms_payment_db
-      auto-index-creation: true
-      authentication-database: admin
-      username: root
-      password: root
-      dbAuthSource: gms_iam_db
-
-io:
-  reflectoring:
-    kafka:
-      bootstrap-servers: 'localhost:9092'
-
-openapi:
-  service:
-    title: GMS Payment Service
-    version: 1.0
-    description: Client Payment for GMS
-    url: http://127.0.0.1:8074
-    contact:
-      name: GMS Team
-      url: https://github.com/jesseballera/booking-app/tree/master/app-payment
+  profiles:
+    active: default
+  config:
+    import: "optional:configserver:http://localhost:8888"

@@ -2,20 +2,25 @@ package com.purplemango.gms.models.iam;
 
 import com.purplemango.gms.models.core.enums.Status;
 import lombok.Builder;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.UUID;
 
 @Builder
-@Document(collection = "roles")
-public record Role(
+@Document(collection = Role.COLLECTION_NAME)
+public record Role (
+
         @MongoId String id,
         String name,
+        String tenant,
         Collection<Permission> permissions,
-        Status status) {
+        Status status) implements Serializable {
+
+        private static final long serialVersionUID = 1L;
+        public static final String COLLECTION_NAME = "roles";
+
 
 //    public static Builder build() {
 //        return new Role();

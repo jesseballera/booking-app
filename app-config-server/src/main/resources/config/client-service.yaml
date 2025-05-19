@@ -1,0 +1,23 @@
+server:
+  port: 0
+  servlet:
+    context-path: /
+  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+
+spring:
+  profiles:
+    active: default
+  application:
+    db: gms-client-db
+
+openapi:
+  service:
+    title: GMS Client Data Service
+    version: 1.0
+    description: Client Data Service for GMS
+    url: http://127.0.0.1:8060
+    contact:
+      name: GMS Team
+      url: https://github.com/jesseballera/booking-app/tree/master/app-client-data

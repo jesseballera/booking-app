@@ -64,11 +64,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/",
+                        .requestMatchers("/**",
                                     "/v3/api-docs",
                                     "/v3/api-docs/**",
                                     "/v3/api-docs**",
                                     "/v3/api-docs/swagger-config",
+                                    "/gateway-service/v3/api-docs/swagger-config",
                                     "/swagger-ui/**",
                                     "/swagger-ui**")
                         .permitAll()

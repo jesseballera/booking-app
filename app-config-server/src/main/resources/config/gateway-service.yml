@@ -1,0 +1,152 @@
+server:
+  port: 8060
+#  forward-headers-strategy: framework
+  servlet:
+    context-path: /
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instanceId: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){blue} %clr([%X{traceId:-},%X{spanId:-}]){cyan} %clr(${LOG_LEVEL_PATTERN:-%5p}) %m%n"
+  level:
+    root: INFO
+
+spring:
+#  application:
+#    name: gateway-service
+  output:
+    ansi:
+      enabled: always
+  main:
+    web-application-type: reactive
+    jackson:
+      serialization:
+        INDENT_OUTPUT: true
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 20000
+        response-timeout: 7s
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      globalcors:
+        corsConfigurations:
+          "[/**]":
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+      routes:
+        - id: iam-service
+          uri: lb://iam-service
+          predicates:
+            - Path=/iam-service/**
+          filters:
+            - RewritePath=/iam-service/(?<segment>.*), /$\{segment}
+#            - StripPrefix=1
+#        - id: client-service-routes
+#          uri: lb://client-service
+#          predicates:
+#            - Path=/client/**
+#          filters:
+#            - RewritePath=/client/(?<path>.*), /$\{path}
+#            - StripPrefix=1
+#        - id: payment-service-routes
+#          uri: lb://payment-service
+#          predicates:
+#            - Path=/payment/**
+#          filters:
+#            - RewritePath=/payment/(?<path>.*), /$\{path}
+#            - StripPrefix=1
+#        - id: reservation-service-routes
+#          uri: lb://reservation-service
+#          predicates:
+#            - Path=/reservation/**
+#          filters:
+#            - RewritePath=/reservation/(?<path>.*), /$\{path}
+#            - StripPrefix=1
+        - id: openapi
+          uri: http://localhost:8061
+          predicates:
+            - Path=/gateway-service/v3/api-docs/**, /gateway-service/**
+          filters:
+            - RewritePath=/gateway-service/v3/api-docs/(?<segment>.*), /$\{segment}
+#            - RewritePath=/gateway-service/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs, /$\{segment}
+#            - StripPrefix=1
+#          predicates:
+#            - Path=/gateway-service/v3/api-docs/**
+#          filters:
+#            - RewritePath=/gateway-service/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+#            - ,/$\{segment}
+#        - id: authorization-server
+#          uri: lb://authorization-server
+#          predicates:
+#            - Method=GET,POST,OPTIONS
+#            - Path=/authorization-server/**
+#          metadata:
+#            cors:
+#              allowed-origins: "http://localhost:8060"
+#              allowed-methods: GET, POST, PUT, DELETE, PATCH, OPTIONS
+#              allowed-headers: "*"
+#              max-age: 30
+#          filters:
+#            - RewritePath=/authorization-server/(?<path>.*), /$\{path}/v3/api-docs
+#            - ,/$\{segment}
+
+springdoc:
+  swagger-ui:
+#    enabled: true
+    use-root-path: true
+    path: /swagger-ui.html
+    configUrl: /gateway-service/v3/api-docs/swagger-config
+    url: /v3/api-docs
+  #    disable-swagger-default-url: true
+  #    url: /v3/api-docs
+#  enable-native-support: true
+  api-docs:
+#    version: openapi_3_1
+    enabled: true
+#  version: openapi_3_1
+    urls:
+      - url: /v3/api-docs
+        name: gateway-service
+        primaryName: API Gateway Service
+#      - url: /authorization-server/v3/api-docs
+#        name: Authorization Server
+#        primaryName: Authorization Server
+      - url: /iam-service/v3/api-docs
+        name: iam-service
+        primaryName: IAM Service
+      #        group: IAM
+#      - url: /client-service/v3/api-docs
+#        name: Client Service
+#        primaryName: Client Service
+#      #        group: Client
+#      - url: /payment-service/v3/api-docs
+#        name: Payment Service
+#        primaryName: Payment Service
+#      #        group: Payment
+#      - url: /reservation-service/v3/api-docs
+#        name: Reservation Service
+#        primaryName: Reservation Service
+#        group: Reservation
+
+
+
+#springdoc:
+#  cache:
+#    disabled: true
+#  version: '@springdoc.version@'
+#  swagger-ui:
+#    use-root-path: true
+#  api-docs:
+#    version: openapi_3_1
+
+

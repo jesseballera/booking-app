@@ -1,32 +1,7 @@
-server:
-  port: 8070
-  forward-headers-strategy: framework
-  servlet:
-    contextPath: /
-  error:
-    include-stacktrace: never
-
-
 spring:
   application:
     name: iam-service
-  data:
-    mongodb:
-      uri: mongodb://root:root@localhost:27017/${spring.data.mongodb.database}?authSource=${spring.data.mongodb.authentication-database}&readPreference=primaryPreferred&directConnection=true
-      database: gms_iam_db
-      auto-index-creation: true
-      authentication-database: admin
-      username: root
-      password: root
-      dbAuthSource: gms_iam_db
-
-
-openapi:
-  service:
-    title: GMS IAM Service
-    version: 1.0
-    description: IAM Service for GMS
-    url: http://127.0.0.1:8070
-    contact:
-      name: GMS Team
-      url: https://github.com/jesseballera/booking-app/tree/master/app-iam
+  profiles:
+    active: default
+  config:
+    import: "optional:configserver:http://localhost:8888"

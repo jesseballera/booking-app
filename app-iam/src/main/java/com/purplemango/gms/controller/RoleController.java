@@ -3,6 +3,7 @@ package com.purplemango.gms.controller;
 import com.purplemango.gms.models.iam.AddRole;
 import com.purplemango.gms.models.iam.Role;
 import com.purplemango.gms.service.RoleService;
+import com.purplemango.gms.service.TenantService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,29 +16,39 @@ import java.util.Collection;
 public class RoleController {
 
     private final RoleService roleService;
+    private final TenantService tenantService;
 
     @Autowired
-    public RoleController(RoleService roleService) {
+    public RoleController(RoleService roleService, TenantService tenantService) {
         this.roleService = roleService;
+        this.tenantService = tenantService;
     }
-    @GetMapping
-    public ResponseEntity<Collection<Role>> viewAllRoles() {
-        return ResponseEntity.ok(roleService.viewAllRoles());
-    }
-
-    @GetMapping("/name/{role-name}")
-    public ResponseEntity<Role> viewRoleByName(@PathVariable("role-name") String roleName) {
-        return ResponseEntity.ok(roleService.viewByName(roleName));
+    @GetMapping("/{tenant-id}")
+    public ResponseEntity<Collection<Role>> viewAllRoles(@PathVariable("tenant-id") String tenantId) {
+        if (!tenantService.existByTenantId(tenantId))
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(roleService.viewAllRoles(tenantId));
     }
 
-    @GetMapping("/{role-id}")
-    public ResponseEntity<Role> viewRoleById(@PathVariable("role-id") String roleId) {
-        return ResponseEntity.ok(roleService.viewById(roleId));
+    @GetMapping("/{tenant-id}/find-by-name")
+    public ResponseEntity<Role> viewRoleByName(@PathVariable("tenant-id") String tenantId, @RequestParam("role-name") String roleName) {
+        if (!tenantService.existByTenantId(tenantId))
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(roleService.viewByName(tenantId, roleName));
     }
 
-    @PostMapping
-    public ResponseEntity<String> createRole(@RequestBody @Valid AddRole entity) {
-        roleService.createRole(entity);
+    @GetMapping("/{tenant-id}/find-by-id")
+    public ResponseEntity<Role> viewRoleById(@PathVariable("tenant-id") String tenantId, @RequestParam("role-id") String roleId) {
+        if (!tenantService.existByTenantId(tenantId))
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(roleService.viewById(tenantId, roleId));
+    }
+
+    @PostMapping("/{tenant-id}")
+    public ResponseEntity<String> createRole(@PathVariable("tenant-id") String tenantId, @RequestBody @Valid AddRole entity) {
+        if (!tenantService.existByTenantId(tenantId))
+            return ResponseEntity.notFound().build();
+        roleService.createRole(tenantId, entity);
         return ResponseEntity.ok("Role created successfully");
     }
 }

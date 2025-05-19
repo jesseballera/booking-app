@@ -11,4 +11,5 @@ import java.util.UUID;
 public record AddRole(
         String name,
         List<String> permissions,
+        String tenant,
         Status status) { }

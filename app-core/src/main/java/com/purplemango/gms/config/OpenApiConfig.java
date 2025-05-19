@@ -20,7 +20,8 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openAPI(@Value("${openapi.service.title}") String title,
                            @Value("${openapi.service.version}") String version,
-                           @Value("${openapi.service.url}") String url) {
+                           @Value("${openapi.service.url}") String url,
+                           @Value("${openapi.service.description}") String description) {
         final String securitySchemeName = "bearerAuth";
        return new OpenAPI()
                .servers(List.of(new Server().url(url)))
@@ -33,7 +34,7 @@ public class OpenApiConfig {
                                                .scheme("bearer")
                                                .bearerFormat("JWT")))
                .security(List.of(new SecurityRequirement().addList(securitySchemeName)))
-               .info(new Info().title(title).version(version));
+               .info(new Info().title(title).version(version).description(description));
 
     }
 }

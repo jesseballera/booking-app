@@ -1,0 +1,27 @@
+server:
+  port: 0
+#  servlet:
+#    context-path: /
+#  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+
+spring:
+  profiles:
+    active: default
+  application:
+    db: gms-iam-db
+
+openapi:
+  service:
+    title: Authorization Server
+    description: Authorization Server
+    version: 1.0.0
+    url: http://localhost:8060
+    contact:
+      name: Purple Mango
+      url: XXXXXXXXXXXXXXXXXXXXXXXXXXX
+      email: XXXXXXXXXXXXXXXXXXXXXXX
+    license:
+      name: Apache 2.0
+      url: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
